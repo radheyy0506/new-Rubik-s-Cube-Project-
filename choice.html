@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Cuber | Select Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff007f; --bg-dark: #050505; }
+        body { background: radial-gradient(circle at center, #1b1b3a 0%, var(--bg-dark) 100%); color: white; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow: hidden; }
+        h1 { font-family: 'Bungee'; font-size: 3.5rem; margin: 0; background: linear-gradient(to right, var(--neon-blue), var(--neon-pink)); 
+             background-clip: text; -webkit-background-clip: text; 
+             -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-top: 40px; }
+        .cube-card { background: rgba(255, 255, 255, 0.03); border: 2px solid rgba(0, 242, 255, 0.3); padding: 40px 60px; text-decoration: none; color: white; border-radius: 20px; text-align: center; transition: 0.4s; backdrop-filter: blur(10px); }
+        .cube-card:hover { transform: translateY(-10px); border-color: var(--neon-pink); box-shadow: 0 0 30px rgba(255, 0, 127, 0.3); }
+        .cube-card h2 { font-family: 'Bungee'; font-size: 2.5rem; margin: 0; }
+        .footer-nav { margin-top: 50px; }
+        .nav-link { color: #888; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 30px; border: 1px solid var(--neon-blue); }
+    </style>
+</head>
+<body>
+    <h1>SELECT YOUR LAB</h1>
+    <div class="grid">
+        <a href="3x3.html" class="cube-card"><h2>3X3</h2></a>
+        <a href="4x4.html" class="cube-card"><h2>4X4</h2></a>
+        <a href="5x5.html" class="cube-card"><h2>5X5</h2></a>
+        <a href="6x6.html" class="cube-card"><h2>6X6</h2></a>
+    </div>
+    <div class="footer-nav"><a href="index.html" class="nav-link">← BACK TO HOME PG</a></div>
+</body>
+</html>

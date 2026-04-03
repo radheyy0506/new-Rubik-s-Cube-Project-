@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6x6 Shadow Cube | Master Cuber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007f; --neon-blue: #00f2ff; --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; --cube-yellow: #ffcc00; --cube-green: #39ff14;
+            --bg-color: var(--deep-space); --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2, h3, .bungee { font-family: 'Bungee', cursive; text-transform: uppercase; }
+
+        /* Updated Navigation to match other labs */
+        nav { 
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(26, 26, 46, 0.9); border-bottom: 2px solid var(--electric-purple);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .back-link { color: var(--neon-blue); text-decoration: none; font-weight: 800; font-size: 0.8rem; transition: 0.3s; }
+        .back-link:hover { color: var(--neon-pink); }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .lab-header { text-align: center; margin-bottom: 50px; }
+        .lab-header h1 { font-size: 3rem; color: white; text-shadow: 4px 4px 0 var(--electric-purple); }
+        .difficulty-tag { background: var(--electric-purple); color: white; padding: 5px 20px; border-radius: 50px; font-family: 'Bungee'; font-size: 0.8rem; display: inline-block; margin-top: 10px; border: 1px solid var(--neon-blue); }
+
+        /* Step Cards */
+        .step-card { 
+            background: var(--card-bg); border: 1px solid rgba(90, 24, 154, 0.3);
+            border-radius: 25px; padding: 35px; margin-bottom: 40px;
+        }
+        .step-card h2 { color: var(--neon-blue); margin-bottom: 15px; border-left: 5px solid var(--electric-purple); padding-left: 15px; }
+        
+        .algo-box { 
+            background: #000; color: var(--cube-green); padding: 20px; border-radius: 15px; 
+            font-family: 'Bungee'; font-size: 1.1rem; letter-spacing: 1px; margin: 15px 0;
+            border: 1px dashed var(--neon-blue); text-align: center;
+        }
+
+        .parity-alert {
+            background: linear-gradient(135deg, rgba(90, 24, 154, 0.2) 0%, rgba(26, 26, 46, 0.8) 100%);
+            border: 2px solid var(--electric-purple); padding: 30px; border-radius: 25px; margin-bottom: 40px;
+        }
+
+        .check-item { margin-bottom: 15px; display: flex; gap: 12px; align-items: flex-start; font-size: 0.95rem; }
+        .check-item i { color: var(--neon-pink); margin-top: 5px; }
+
+        .motivation-box { 
+            background: rgba(255, 255, 255, 0.03); padding: 30px; border-radius: 20px; 
+            text-align: center; border-top: 4px solid var(--neon-pink); font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .lab-header h1 { font-size: 1.8rem; }
+            .algo-box { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="bungee" style="color: var(--neon-blue);">6x6 Algorithm Lab</div>
+        <a href="learn.html" class="back-link"><i class="fas fa-th-large"></i> ALGO LIBRARY</a>
+    </nav>
+
+    <div class="container">
+        <header class="lab-header">
+            <h1>SHADOW CUBE</h1>
+            <div class="difficulty-tag">Master Level: 6x6</div>
+        </header>
+
+        <div class="step-card">
+            <h2>🟩 STEP 1: Massive Centers</h2>
+            <p>On a 6x6, each center is a 4x4 block (16 pieces per face!).</p>
+            <div class="check-item" style="margin-top:20px;"><i class="fas fa-layer-group"></i> <span>Solve <b>White & Yellow</b> first to establish your axis.</span></div>
+            <div class="check-item"><i class="fas fa-layer-group"></i> <span>Build centers <b>row by row</b> (1x4 bars).</span></div>
+            <div class="check-item"><i class="fas fa-layer-group"></i> <span>Precision is key: One wrong slice can scramble two other faces.</span></div>
+        </main>
+
+        <div class="step-card">
+            <h2>🟦 STEP 2: Quad-Edge Pairing</h2>
+            <p>Each edge has 4 small pieces. We pair them in sets to reduce them to a single unit.</p>
+            <div class="algo-box">Use Inner Slice Moves (Reduction Logic)</div>
+            <p style="font-size: 0.9rem; opacity: 0.8;"><b>Strategy:</b> Pair them into 2-piece sets first, then merge those into the final 4-piece edge.</p>
+        </div>
+
+        <div class="step-card">
+            <h2>🟨 STEP 3: 3x3 Reduction Stage</h2>
+            <p>The cube is now a "Mega-3x3". Use your standard Layer-by-Layer algorithms.</p>
+            <div class="check-item" style="margin-top:10px;"><i class="fas fa-check-double"></i> <span>Solve Cross & F2L.</span></div>
+            <div class="check-item"><i class="fas fa-check-double"></i> <span>Treat the 4x4 centers and quad-edges as single pieces.</span></div>
+        </div>
+
+        <div class="parity-alert">
+            <h2 class="bungee" style="color: var(--neon-pink);"><i class="fas fa-microchip"></i> STEP 4: 6x6 Parity Fix</h2>
+            <p style="margin-bottom: 20px; font-size: 0.9rem;">Parity on 6x6 is very common due to the even number of layers. Use these precise algorithms:</p>
+            
+            <p><b>OLL Parity (Flipped Edge)</b></p>
+            <div class="algo-box" style="color: var(--neon-pink);">r2 B2 U2 l U2 r' U2 l2</div>
+
+            <p style="margin-top:20px;"><b>PLL Parity (Edge Swapping)</b></p>
+            <div class="algo-box" style="color: var(--neon-pink);">2R2 U2 2R2 Uw2 2R2 Uw2</div>
+        </div>
+
+        <div class="motivation-box">
+            <p>“For big cubes like 5×5 and 6×6, we use the Layer-by-Layer method in three main stages: solve centers, pair edges, then solve the cube like a 3×3. Parity errors may occur, but they can be fixed using special algorithms. This method is simple, logical, and helps us systematically solve even the largest cubes.”</p>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; opacity: 0.5;">
+        MASTER CUBER © 2026 | DESIGNED BY RADHIKA R. JANAWEKAR
+    </footer>
+
+</body>
+</html>

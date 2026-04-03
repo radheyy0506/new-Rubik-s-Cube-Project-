@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Cuber 4x4 | Speed Unified</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --neon-pink: #ff007f; --neon-blue: #00f2ff; --panel-bg: rgba(10, 10, 25, 0.9); --text-color: #ffffff; --bg-grad: radial-gradient(circle at center, #1b1b3a 0%, #050505 100%); }
+        body.light-mode { --panel-bg: rgba(245, 245, 255, 0.9); --text-color: #1a1a2e; --bg-grad: radial-gradient(circle at center, #ffffff 0%, #cbd5e1 100%); }
+        body { margin: 0; overflow: hidden; font-family: 'Poppins', sans-serif; background: var(--bg-grad); color: var(--text-color); transition: background 0.4s ease; }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; padding: 20px; box-sizing: border-box; z-index: 10; }
+        .logo-small { pointer-events: auto; font-family: 'Bungee'; font-size: 1.2rem; color: var(--neon-blue); text-shadow: 2px 2px 0 var(--neon-pink); text-decoration: none; display: block; margin-bottom: 15px; }
+        .side-panel { pointer-events: auto; background: var(--panel-bg); border: 2px solid var(--neon-blue); border-radius: 20px; padding: 15px; width: 280px; backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .stat-value { font-family: 'Bungee'; color: var(--neon-pink); font-size: 1rem; }
+        .btn-action { width: 100%; padding: 10px; font-family: 'Bungee'; background: var(--neon-pink); color: white; border: none; border-radius: 10px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 0 var(--neon-blue); font-size: 0.75rem; }
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .control-group { background: rgba(255,255,255,0.05); padding: 8px; border-radius: 10px; border: 1px solid rgba(0,242,255,0.2); margin: 5px 0; }
+        .control-label { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; color: var(--neon-blue); display: block; margin-bottom: 4px; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: var(--neon-blue); }
+        .btn-move-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .btn-move { background: #111; color: #fff; border: 1px solid #444; font-family: 'Bungee'; padding: 8px 0; cursor: pointer; border-radius: 6px; font-size: 0.7rem; transition: 0.2s; }
+        body.shift-active .btn-move { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 10px var(--neon-pink); }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <div id="ui-layer">
+        <a href="choice.html" class="logo-small">← MASTER CUBER 4x4</a>
+        <div class="side-panel">
+            <button class="btn-action" style="background:#5a189a; box-shadow: 0 4px 0 #fff;" onclick="toggleTheme()">🌓 THEME MODE</button>
+            <button id="solve-btn" class="btn-action" onclick="window.solveReset()">SOLVE FOR ME</button>
+            <button class="btn-action" style="background:var(--neon-blue); color:#000;" onclick="window.scramble()">MIX GALAXY</button>
+            <div class="control-group"><span class="control-label">MASTER SPEED</span><input type="range" id="speed-slider" min="0.05" max="0.8" step="0.05" value="0.2"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align:center;">
+                <div><span id="move-count" class="stat-value">0</span><br><small>TWISTS</small></div>
+                <div><span id="timer" class="stat-value">00:00</span><br><small>TIME</small></div>
+            </div>
+            <div class="btn-move-grid">
+                <button class="btn-move" onclick="makeMove('F', 0)">F1</button><button class="btn-move" onclick="makeMove('F', 1)">F2</button><button class="btn-move" onclick="makeMove('F', 2)">F3</button><button class="btn-move" onclick="makeMove('F', 3)">F4</button>
+                <button class="btn-move" onclick="makeMove('U', 0)">U1</button><button class="btn-move" onclick="makeMove('U', 1)">U2</button><button class="btn-move" onclick="makeMove('U', 2)">U3</button><button class="btn-move" onclick="makeMove('U', 3)">U4</button>
+                <button class="btn-move" onclick="makeMove('R', 0)">R1</button><button class="btn-move" onclick="makeMove('R', 1)">R2</button><button class="btn-move" onclick="makeMove('R', 2)">R3</button><button class="btn-move" onclick="makeMove('R', 3)">R4</button>
+            </div>
+            <p style="font-size: 0.5rem; text-align: center; color: var(--neon-pink); font-weight: 800; margin: 0;">SHIFT = PRIME</p>
+        </div>
+    </div>
+
+    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "orbit": "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js", "rounded": "https://unpkg.com/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js" } }</script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'orbit';
+        import { RoundedBoxGeometry } from 'rounded';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(7, 7, 7);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.prepend(renderer.domElement);
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        const sun = new THREE.DirectionalLight(0xffffff, 1); sun.position.set(5, 10, 7); scene.add(sun);
+
+        const starV = [];
+        for(let i=0; i<3000; i++) starV.push((Math.random()-0.5)*150, (Math.random()-0.5)*150, (Math.random()-0.5)*150);
+        const stars = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(starV, 3)), new THREE.PointsMaterial({color: 0xffffff, size: 0.12}));
+        scene.add(stars);
+
+        const cubies = [];
+        const stickerColors = [0xffffff, 0xffff00, 0xff0000, 0xffa500, 0x0000ff, 0x00ff00];
+        let isAnimating = false, moveCount = 0, seconds = 0, timerActive = false, timerInterval = null, isShift = false, moveHistory = [];
+
+        function create4x4() {
+            const geom = new RoundedBoxGeometry(0.94, 0.94, 0.94, 3, 0.08);
+            for (let x = 0; x < 4; x++) {
+                for (let y = 0; y < 4; y++) {
+                    for (let z = 0; z < 4; z++) {
+                        if (x > 0 && x < 3 && y > 0 && y < 3 && z > 0 && z < 3) continue;
+                        const cubie = new THREE.Mesh(geom, stickerColors.map(c => new THREE.MeshPhysicalMaterial({ color: c, roughness: 0.1 })));
+                        cubie.position.set(x - 1.5, y - 1.5, z - 1.5);
+                        cubie.userData = { originalPos: new THREE.Vector3(x - 1.5, y - 1.5, z - 1.5) };
+                        scene.add(cubie); cubies.push(cubie);
+                    }
+                }
+            }
+        }
+
+        window.makeMove = function(faceType, layerIdx, forcePrime = false, isAuto = false) {
+            if (isAnimating) return;
+            const currentSpeed = parseFloat(document.getElementById('speed-slider').value);
+            const camFwd = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+            const camUp = new THREE.Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+            const worldDirs = {'x':new THREE.Vector3(1,0,0),'-x':new THREE.Vector3(-1,0,0),'y':new THREE.Vector3(0,1,0),'-y':new THREE.Vector3(0,-1,0),'z':new THREE.Vector3(0,0,1),'-z':new THREE.Vector3(0,0,-1)};
+            const findBest = (vec) => { let max = -Infinity, pick = ''; for(let k in worldDirs) { let d = vec.dot(worldDirs[k]); if(d > max) { max=d; pick=k; } } return pick; };
+            let axisKey = (faceType==='F')?findBest(camFwd):(faceType==='U')?findBest(camUp):findBest(new THREE.Vector3().crossVectors(camFwd, camUp));
+            const axis = axisKey.replace('-','');
+            const coords = [1.5, 0.5, -0.5, -1.5];
+            let layer = axisKey.includes('-') ? coords[3-layerIdx] : coords[layerIdx];
+            let dir = axisKey.includes('-') ? 1 : -1;
+            if (isShift || forcePrime) dir *= -1;
+            moveHistory.push({ axis, layer, dir });
+
+            if (!isAuto) {
+                moveCount++; document.getElementById('move-count').innerText = moveCount;
+                let totalMoves = parseInt(localStorage.getItem('moves_4x4')) || 0;
+                localStorage.setItem('moves_4x4', totalMoves + 1);
+                if(!timerActive) startTimer();
+            }
+            executeRotation(axis, layer, dir, currentSpeed);
+        };
+
+        function executeRotation(axis, layer, dir, speed) {
+            isAnimating = true; const pivot = new THREE.Group(); scene.add(pivot);
+            cubies.forEach(c => { if(Math.abs(c.position[axis]-layer)<0.1) pivot.attach(c); });
+            const target = (Math.PI/2)*dir; let current = 0;
+            function animate() {
+                current += (target>0?speed:-speed);
+                if(Math.abs(current)>=Math.PI/2) {
+                    pivot.rotation[axis]=target; pivot.updateMatrixWorld();
+                    [...pivot.children].forEach(c=>scene.attach(c));
+                    scene.remove(pivot); isAnimating = false; checkSolved();
+                } else { pivot.rotation[axis]=current; requestAnimationFrame(animate); }
+            }
+            animate();
+        }
+
+        window.solveReset = function() {
+            if (isAnimating || moveHistory.length === 0) return;
+            const step = () => {
+                if (moveHistory.length === 0) { moveCount=0; seconds=0; stopTimer(); document.getElementById('move-count').innerText="0"; document.getElementById('timer').innerText="00:00"; return; }
+                const last = moveHistory.pop();
+                executeRotation(last.axis, last.layer, -last.dir, 0.3);
+                const check = setInterval(() => { if (!isAnimating) { clearInterval(check); step(); } }, 10);
+            };
+            step();
+        };
+
+        window.scramble = () => {
+            if(isAnimating) return; stopTimer(); seconds = 0; moveCount = 0; document.getElementById('timer').innerText = "00:00"; document.getElementById('move-count').innerText = "0";
+            let count = 0; const scrambleAction = () => {
+                if(count >= 20) return;
+                window.makeMove(['F','U','R'][Math.floor(Math.random()*3)], Math.floor(Math.random()*4), Math.random()>0.5, true);
+                setTimeout(() => { count++; scrambleAction(); }, 120);
+            };
+            scrambleAction();
+        };
+
+        function startTimer() {
+            if(timerActive) return; timerActive = true;
+            timerInterval = setInterval(() => {
+                seconds++;
+                let globalSeconds = parseInt(localStorage.getItem('time_4x4')) || 0;
+                localStorage.setItem('time_4x4', globalSeconds + 1);
+                const m = Math.floor(seconds/60).toString().padStart(2,'0'), s = (seconds%60).toString().padStart(2,'0');
+                document.getElementById('timer').innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        function stopTimer() { timerActive = false; clearInterval(timerInterval); }
+
+        function checkSolved() {
+            let solved = true; cubies.forEach(c => { if(c.position.distanceTo(c.userData.originalPos)>0.1) solved = false; });
+            if(solved && moveCount > 2 && !isAnimating) {
+                confetti({ particleCount: 150 }); stopTimer();
+                const curT = document.getElementById('timer').innerText;
+                const bestT = localStorage.getItem('bestTime_4x4');
+                const bestM = localStorage.getItem('bestMoves_4x4');
+                if (!bestT || curT < bestT) localStorage.setItem('bestTime_4x4', curT);
+                if (!bestM || moveCount < parseInt(bestM)) localStorage.setItem('bestMoves_4x4', moveCount);
+            }
+        }
+
+        window.toggleTheme = () => { document.body.classList.toggle('light-mode'); stars.visible = !document.body.classList.contains('light-mode'); };
+        window.addEventListener('keydown', (e) => { if(e.key === "Shift") document.body.classList.add('shift-active'); isShift = e.shiftKey; });
+        window.addEventListener('keyup', (e) => { if(e.key === "Shift") document.body.classList.remove('shift-active'); isShift = e.shiftKey; });
+        create4x4();
+        function anim() { requestAnimationFrame(anim); controls.update(); renderer.render(scene, camera); stars.rotation.y += 0.0003; }
+        anim();
+    </script>
+</body>
+</html>

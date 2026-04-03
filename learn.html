@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Hub | Master Cuber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007f; --neon-blue: #00f2ff; --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; --cube-yellow: #ffcc00; --cube-green: #39ff14;
+            --bg-color: var(--deep-space); --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
+        h1, h2, h3, .bungee { font-family: 'Bungee', cursive; text-transform: uppercase; }
+
+        /* Navigation */
+        nav { 
+            padding: 15px 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            background: rgba(26, 26, 46, 0.95);
+            border-bottom: 3px solid var(--neon-pink);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo { color: var(--neon-pink); font-size: 1.5rem; text-decoration: none; }
+        .back-link { color: var(--neon-blue); text-decoration: none; font-weight: 800; font-size: 0.8rem; }
+
+        /* Header */
+        .header-section { text-align: center; padding: 60px 10%; background: linear-gradient(to bottom, var(--electric-purple), var(--deep-space)); }
+        .header-section h1 { font-size: 3.5rem; text-shadow: 4px 4px 0 var(--neon-pink); margin-bottom: 10px; }
+
+        /* Main Grid */
+        .learn-container { max-width: 1100px; margin: -40px auto 60px; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+
+        .main-card { 
+            background: var(--card-bg); 
+            border: 2px solid var(--neon-blue); 
+            padding: 40px; 
+            border-radius: 25px; 
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .main-card:hover { transform: translateY(-10px); box-shadow: 0 0 30px rgba(0, 242, 255, 0.2); }
+
+        .card-icon { font-size: 3rem; color: var(--cube-yellow); margin-bottom: 20px; }
+        .card-title { font-size: 1.8rem; margin-bottom: 15px; color: var(--neon-blue); }
+        .card-desc { font-size: 0.95rem; opacity: 0.8; margin-bottom: 25px; }
+
+        /* Algorithm Sub-Menu */
+        .algo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .algo-btn { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--neon-pink); 
+            color: white; 
+            padding: 12px; 
+            text-align: center; 
+            text-decoration: none; 
+            font-family: 'Bungee'; 
+            font-size: 0.75rem; 
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+        .algo-btn:hover { background: var(--neon-pink); color: white; transform: scale(1.05); }
+
+        .btn-full { 
+            display: block; 
+            text-align: center; 
+            background: var(--neon-blue); 
+            color: var(--deep-space); 
+            padding: 15px; 
+            text-decoration: none; 
+            font-family: 'Bungee'; 
+            border-radius: 12px;
+            margin-top: auto;
+        }
+
+        footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            .learn-container { grid-template-columns: 1fr; }
+            .header-section h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo bungee">MASTER CUBER</a>
+        <a href="index.html" class="back-link"><i class="fas fa-chevron-left"></i> BACK TO DASHBOARD</a>
+    </nav>
+
+    <header class="header-section">
+        <h1>LEARNING <span style="color: var(--neon-blue);">CENTER</span></h1>
+        <p style="opacity: 0.7; letter-spacing: 1px;">Master the art of speedcubing from basics to pro algorithms.</p>
+    </header>
+
+    <div class="learn-container">
+        
+        <div class="main-card">
+            <div>
+                <i class="fas fa-book-open card-icon"></i>
+                <h2 class="card-title">General Instructions</h2>
+                <p class="card-desc">New to cubing? Start here to learn notation, basic movements, and how to read the algorithms used in the library.</p>
+            </div>
+            <a href="instructions.html" class="btn-full">OPEN GUIDE</a>
+        </div>
+
+        <div class="main-card">
+            <div>
+                <i class="fas fa-code card-icon" style="color: var(--cube-green);"></i>
+                <h2 class="card-title">Algorithm Library</h2>
+                <p class="card-desc">Ready to solve? Select your cube size below to access the complete list of algorithms and solving methods.</p>
+                
+                <div class="algo-grid">
+                    <a href="algo3x3.html" class="algo-btn">3x3 LAB</a>
+                    <a href="algo4x4.html" class="algo-btn">4x4 LAB</a>
+                    <a href="algo5x5.html" class="algo-btn">5x5 LAB</a>
+                    <a href="algo6x6.html" class="algo-btn">6x6 LAB</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        MASTER CUBER © 2026 | DESIGNED BY RADHIKA R. JANAWEKAR
+    </footer>
+
+</body>
+</html>

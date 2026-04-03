@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4x4 Rubik's Revenge | Master Cuber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007f; --neon-blue: #00f2ff; --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; --cube-yellow: #ffcc00; --cube-green: #39ff14;
+            --bg-color: var(--deep-space); --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2, h3, .bungee { font-family: 'Bungee', cursive; text-transform: uppercase; }
+
+        nav { 
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(26, 26, 46, 0.9); border-bottom: 2px solid var(--neon-pink);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .back-link { color: var(--neon-pink); text-decoration: none; font-weight: 800; font-size: 0.8rem; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .lab-header { text-align: center; margin-bottom: 50px; }
+        .lab-header h1 { font-size: 3rem; color: white; text-shadow: 4px 4px 0 var(--neon-pink); }
+        
+        .method-tag { background: var(--neon-pink); color: white; padding: 5px 20px; border-radius: 50px; font-family: 'Bungee'; font-size: 0.8rem; display: inline-block; margin-top: 10px; }
+
+        /* Step Cards */
+        .step-card { 
+            background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 25px; padding: 30px; margin-bottom: 40px; position: relative;
+        }
+        .step-card h2 { color: var(--neon-blue); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        
+        .algo-box { 
+            background: #000; color: var(--cube-green); padding: 20px; border-radius: 15px; 
+            font-family: 'Bungee'; font-size: 1.1rem; letter-spacing: 1px; margin: 15px 0;
+            border-left: 5px solid var(--neon-pink); text-align: center; word-wrap: break-word;
+        }
+
+        .parity-warning {
+            background: rgba(255, 0, 127, 0.1); border: 2px solid var(--neon-pink);
+            padding: 25px; border-radius: 20px; margin-bottom: 40px;
+        }
+
+        /* Notation Guide */
+        .notation-table {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;
+        }
+        .notation-card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        .notation-card b { color: var(--cube-yellow); font-family: 'Bungee'; }
+
+        .tips-list { list-style: none; margin-top: 15px; }
+        .tips-list li { margin-bottom: 10px; display: flex; gap: 10px; font-size: 0.9rem; opacity: 0.9; }
+        .tips-list i { color: var(--cube-green); margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            .lab-header h1 { font-size: 2rem; }
+            .algo-box { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="bungee" style="color: var(--neon-pink);">4x4 Algorithm Lab</div>
+        <a href="learn.html" class="back-link"><i class="fas fa-th-large"></i> ALGO LIBRARY</a>
+    </nav>
+
+    <div class="container">
+        <header class="lab-header">
+            <h1>REDUCTION <span style="color: var(--neon-blue);">METHOD</span></h1>
+            <div class="method-tag">4x4 Rubik's Revenge</div>
+        </header>
+
+        <div class="step-card">
+            <h2><i class="fas fa-th-large"></i> STEP 1: Solve Centers</h2>
+            <p>Create a 2×2 block on each face. Remember: <b>White is opposite Yellow.</b></p>
+            
+            <ul class="tips-list">
+                <li><i class="fas fa-check-circle"></i> Start with White, then Yellow.</li>
+                <li><i class="fas fa-check-circle"></i> Use inner layer moves to group center pieces.</li>
+                <li><i class="fas fa-check-circle"></i> Centers define your face colors!</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <h2><i class="fas fa-equals"></i> STEP 2: Edge Pairing</h2>
+            <p>Pair the split edges so they act like a single 3x3 edge.</p>
+            <div class="algo-box">U R U' R' U' F' U F</div>
+            <p style="font-size: 0.85rem; opacity: 0.8;">📌 Use this to move edges into position for pairing without breaking centers.</p>
+            
+        </div>
+
+        <div class="step-card">
+            <h2><i class="fas fa-cube"></i> STEP 3: Solve as 3x3</h2>
+            <p>Once edges are paired and centers are done, treat the 4x4 like a standard 3x3 cube.</p>
+            <ul class="tips-list">
+                <li><i class="fas fa-info-circle"></i> Treat paired edges as ONE piece.</li>
+                <li><i class="fas fa-info-circle"></i> Ignore the inner layers during this phase.</li>
+            </ul>
+        </div>
+
+        <div class="parity-warning">
+            <h2 class="bungee" style="color: var(--neon-pink);"><i class="fas fa-exclamation-triangle"></i> STEP 4: Fix Parity</h2>
+            <p style="margin-bottom: 20px;">Parity occurs when a layer configuration is impossible on a 3x3. You need these special algorithms:</p>
+            
+            <p><b>OLL Parity (One edge flipped)</b></p>
+            <div class="algo-box" style="font-size: 0.85rem;">r U2 x r U2 r U2 r' U2 l U2 r' U2 r U2 r' U2 r'</div>
+            
+
+            <p style="margin-top:20px;"><b>PLL Parity (Two edges need swapping)</b></p>
+            <div class="algo-box">2R2 U2 2R2 Uw2 2R2 Uw2</div>
+            
+        </div>
+
+        <div class="step-card" style="border-color: var(--cube-yellow);">
+            <h2 style="color: var(--cube-yellow);"><i class="fas fa-keyboard"></i> 4x4 NOTATION GUIDE</h2>
+            <div class="notation-table">
+                <div class="notation-card"><b>R, L, U, D</b> <br> Outer Layers</div>
+                <div class="notation-card"><b>r, l, u, d</b> <br> Inner Layers Only</div>
+                <div class="notation-card"><b>Rw, Lw, Uw</b> <br> Wide (2 Layers)</div>
+                <div class="notation-card"><b>' / 2</b> <br> Anti-clock / Double</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 40px; font-style: italic; opacity: 0.8;">
+            <p>“In the 4×4 cube, we solve centers first, then pair edges to reduce it to a 3×3. Don't fear the parity—it's just one extra algorithm to learn!”</p>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; opacity: 0.5;">
+        MASTER CUBER © 2026 | DESIGNED BY RADHIKA R. JANAWEKAR
+    </footer>
+
+</body>
+</html>

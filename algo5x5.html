@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5x5 Professor's Cube | Master Cuber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007f; --neon-blue: #00f2ff; --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; --cube-yellow: #ffcc00; --cube-green: #39ff14;
+            --bg-color: var(--deep-space); --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2, h3, .bungee { font-family: 'Bungee', cursive; text-transform: uppercase; }
+
+        nav { 
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(26, 26, 46, 0.9); border-bottom: 2px solid var(--cube-green);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .back-link { color: var(--cube-green); text-decoration: none; font-weight: 800; font-size: 0.8rem; }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .lab-header { text-align: center; margin-bottom: 50px; }
+        .lab-header h1 { font-size: 3rem; color: white; text-shadow: 4px 4px 0 var(--electric-purple); }
+        .method-tag { background: var(--cube-green); color: black; padding: 5px 20px; border-radius: 50px; font-family: 'Bungee'; font-size: 0.8rem; display: inline-block; margin-top: 10px; }
+
+        /* Step Cards */
+        .step-card { 
+            background: var(--card-bg); border: 1px solid rgba(57, 255, 20, 0.2);
+            border-radius: 25px; padding: 30px; margin-bottom: 40px;
+        }
+        .step-card h2 { color: var(--cube-green); margin-bottom: 15px; }
+        
+        .algo-box { 
+            background: #000; color: var(--neon-blue); padding: 20px; border-radius: 15px; 
+            font-family: 'Bungee'; font-size: 1.1rem; letter-spacing: 1px; margin: 15px 0;
+            border-left: 5px solid var(--cube-green); text-align: center;
+        }
+
+        .parity-section {
+            background: rgba(255, 204, 0, 0.1); border: 2px solid var(--cube-yellow);
+            padding: 25px; border-radius: 20px; margin-bottom: 40px;
+        }
+
+        .info-list { list-style: none; margin: 15px 0; }
+        .info-list li { margin-bottom: 12px; padding-left: 30px; position: relative; font-size: 0.95rem; }
+        .info-list li::before { content: "\f0a1"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: 0; color: var(--neon-pink); }
+
+        .pro-tip { background: var(--electric-purple); padding: 15px; border-radius: 10px; font-size: 0.85rem; border: 1px solid var(--neon-blue); }
+
+        @media (max-width: 600px) {
+            .lab-header h1 { font-size: 2rem; }
+            .algo-box { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="bungee" style="color: var(--cube-green);">5x5 Algorithm Lab</div>
+        <a href="learn.html" class="back-link"><i class="fas fa-th-large"></i> ALGO LIBRARY</a>
+    </nav>
+
+    <div class="container">
+        <header class="lab-header">
+            <h1>PROFESSOR'S <span style="color: var(--cube-green);">CUBE</span></h1>
+            <div class="method-tag">5x5 Advanced Reduction</div>
+        </header>
+
+        <div class="step-card">
+            <h2>🧩 STEP 1: 3x3 Center Blocks</h2>
+            <p>On a 5x5, each face has 9 center pieces. You must solve them in a 3x3 grid.</p>
+            
+            <ul class="info-list">
+                <li>Solve <b>White</b> and <b>Yellow</b> first.</li>
+                <li>Build the centers <b>row by row</b> (1x3 bars).</li>
+                <li>Remember the color order: White opposite Yellow, Blue opposite Green, Red opposite Orange.</li>
+            </ul>
+            <div class="pro-tip"><b>Pro Tip:</b> Don't panic if you scramble a solved center while working on another. Use "Slice-Turn-Slice Back" moves.</div>
+        </div>
+
+        <div class="step-card">
+            <h2>🟦 STEP 2: Triple Edge Pairing</h2>
+            <p>Each edge consists of 3 pieces. Pair the outer wings with the central edge piece.</p>
+            <p><b>Basic Pairing Algorithm:</b></p>
+            <div class="algo-box">(Uu) R U' R' U' F' U F</div>
+            <p style="font-size: 0.85rem; opacity: 0.8;">📌 Repeat this logic until all 12 "Triple Edges" are complete.</p>
+            
+        </div>
+
+        <div class="step-card">
+            <h2>🟨 STEP 3: 3x3 Stage</h2>
+            <p>The cube is now reduced! Treat the 3x3 centers and the triple-edges as single units.</p>
+            <ul class="info-list">
+                <li>Solve the Cross.</li>
+                <li>Solve the first two layers (F2L).</li>
+                <li>Orient and Permute the last layer (OLL/PLL).</li>
+            </ul>
+        </div>
+
+        <div class="parity-section">
+            <h2 class="bungee" style="color: var(--cube-yellow);"><i class="fas fa-exclamation-circle"></i> STEP 4: 5x5 Parity</h2>
+            <p>5x5 parity is similar to 4x4 but involves the middle slice of the triple edge.</p>
+            
+            <p style="margin-top:15px;"><b>OLL Parity (Flipped Center Edge)</b></p>
+            
+            <div class="algo-box" style="font-size: 0.9rem; color: var(--cube-yellow);">r U2 l' U2 r' U2 l</div>
+
+            <p style="margin-top:20px;"><b>PLL Parity (Edge Swapping)</b></p>
+            
+            <div class="algo-box" style="font-size: 0.9rem; color: var(--cube-yellow);">2R2 U2 2R2 Uw2 2R2 Uw2</div>
+        </div>
+
+        <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--neon-pink);">
+            <p class="bungee" style="color: var(--neon-pink); margin-bottom: 10px;">SUCCESS! 🎉</p>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Once reduced to a 3x3, the 5x5 is just a game of patience. Take it slow, pair those edges, and you'll have it solved in no time.</p>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; opacity: 0.5;">
+        MASTER CUBER © 2026 | DESIGNED BY RADHIKA R. JANAWEKAR
+    </footer>
+
+</body>
+</html>

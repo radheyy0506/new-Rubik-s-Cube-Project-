@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions | Master Cuber</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff007f; --neon-blue: #00f2ff; --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; --cube-yellow: #ffcc00; --cube-green: #39ff14;
+            --bg-color: var(--deep-space); --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        h1, h2, h3, .bungee { font-family: 'Bungee', cursive; text-transform: uppercase; }
+
+        /* Navigation */
+        nav { 
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(26, 26, 46, 0.9); border-bottom: 2px solid var(--neon-blue);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+        .back-link { color: var(--neon-pink); text-decoration: none; font-weight: 800; font-size: 0.8rem; }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        /* Hero Intro */
+        .intro-card { 
+            background: linear-gradient(45deg, var(--electric-purple), var(--deep-space));
+            padding: 40px; border-radius: 30px; border: 2px solid var(--neon-pink);
+            margin-bottom: 40px; text-align: center;
+        }
+
+        /* Section Cards */
+        .info-section { 
+            background: var(--card-bg); border: 1px solid rgba(0, 242, 255, 0.3);
+            padding: 30px; border-radius: 20px; margin-bottom: 30px;
+        }
+        .info-section h2 { color: var(--neon-blue); margin-bottom: 20px; border-bottom: 2px solid var(--neon-blue); display: inline-block; }
+
+        /* Color Grid */
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0; }
+        .color-box { padding: 15px; border-radius: 10px; text-align: center; font-weight: 800; color: #000; }
+
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(0,0,0,0.2); border-radius: 15px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: var(--electric-purple); color: var(--cube-yellow); }
+
+        /* Notation Grid */
+        .notation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .notation-item { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center; border: 1px dashed var(--cube-green); }
+        .notation-item b { font-size: 1.5rem; color: var(--cube-green); display: block; }
+
+        /* Motivation Footer */
+        .motivation { 
+            background: var(--card-bg); border-left: 10px solid var(--cube-green);
+            padding: 30px; border-radius: 0 20px 20px 0; margin-top: 50px; font-style: italic;
+        }
+
+        .highlight { color: var(--neon-pink); font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="bungee" style="color: var(--neon-blue);">Cube Manual</div>
+        <a href="learn.html" class="back-link"><i class="fas fa-arrow-left"></i> BACK TO HUB</a>
+    </nav>
+
+    <div class="container">
+        <header class="intro-card">
+            <h1>CUBE <span style="color: var(--neon-blue);">BASICS</span></h1>
+            <p>The Rubik’s Cube is a 3D mechanical puzzle invented in 1974 by <span class="highlight">Ernő Rubik</span>. Originally a tool for geometry, it is now the world's most famous challenge.</p>
+        </header>
+
+        <section class="info-section">
+            <h2>🎯 Purpose of Learning</h2>
+            <ul style="list-style: none; padding-left: 10px;">
+                <li>🚀 Improves memory & concentration</li>
+                <li>🧠 Develops logical thinking</li>
+                <li>🛠️ Enhances problem-solving skills</li>
+                <li>⏱️ Builds patience & speed</li>
+            </ul>
+        </section>
+
+        <section class="info-section">
+            <h2>🎨 Colors & Standard Rules</h2>
+            <p>Standard cubes have 6 fixed colors. Use the <span class="highlight">Opposite Rules</span> to orient yourself:</p>
+            <div class="color-grid">
+                <div class="color-box" style="background: white;">White</div>
+                <div class="color-box" style="background: #ffcc00;">Yellow</div>
+                <div class="color-box" style="background: #ff3b3b;">Red</div>
+                <div class="color-box" style="background: #ff8c00;">Orange</div>
+                <div class="color-box" style="background: #2e86de; color: white;">Blue</div>
+                <div class="color-box" style="background: #2ecc71;">Green</div>
+            </div>
+            <p style="font-size: 0.9rem; opacity: 0.8;">⚠️ <b>Remember:</b> White ↔ Yellow | Red ↔ Orange | Blue ↔ Green</p>
+        </section>
+
+        <section class="info-section">
+            <h2>🧱 Structure of the Cube</h2>
+            <p><b>1. Corners (3 Colors):</b> 8 pieces. Only orientation changes.</p>
+            <p><b>2. Edges (2 Colors):</b> Located between corners. In 4x4+, these must be paired.</p>
+            <p><b>3. Centers (1 Color):</b> Define the face color. <span class="highlight">HPCs</span> (Helper Pieces) on big cubes.</p>
+        </section>
+
+        <section class="info-section">
+            <h2>🔢 Cube Comparison</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cube Type</th>
+                        <th>Corners</th>
+                        <th>Edges</th>
+                        <th>Centers</th>
+                        <th>Visible Pieces</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>3×3 Cube</td><td>8</td><td>12</td><td>6</td><td>26</td></tr>
+                    <tr><td>4×4 Cube</td><td>8</td><td>24</td><td>24</td><td>56</td></tr>
+                    <tr><td>5×5 Cube</td><td>8</td><td>36</td><td>54</td><td>98</td></tr>
+                    <tr><td>6×6 Cube</td><td>8</td><td>48</td><td>96</td><td>152</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="info-section">
+            <h2>🔄 Cube Notations</h2>
+            <div class="notation-grid">
+                <div class="notation-item"><b>R / L</b> Right / Left</div>
+                <div class="notation-item"><b>U / D</b> Up / Down</div>
+                <div class="notation-item"><b>F / B</b> Front / Back</div>
+                <div class="notation-item"><b>'</b> Anti-Clockwise</div>
+                <div class="notation-item"><b>2</b> Double Turn</div>
+            </div>
+        </section>
+
+        <div class="motivation">
+            <p>“The Rubik’s Cube is not just a toy but a powerful brain-training puzzle. By understanding its structure—corners, edges, and centers—and learning proper rotations, we can solve cubes of different sizes step by step.”</p>
+        </div>
+
+    </div>
+
+    <footer style="text-align: center; padding: 40px; opacity: 0.5;">
+        MASTER CUBER © 2026 | RADHIKA R. JANAWEKAR
+    </footer>
+
+</body>
+</html>

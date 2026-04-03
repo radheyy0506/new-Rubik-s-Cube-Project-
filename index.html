@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Cuber | Virtual Representation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --neon-pink: #ff007f;
+             --neon-blue: #00f2ff; 
+             --deep-space: #1a1a2e;
+            --electric-purple: #5a189a; 
+            --cube-yellow: #ffcc00; 
+            --cube-green: #39ff14;
+            --bg-color: var(--deep-space); 
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.07); 
+            --quote-bg: rgba(0, 0, 0, 0.5);
+            --nav-bg: rgba(26, 26, 46, 0.95);
+        }
+        body.light-mode { --bg-color: #f0f2f5; 
+            --text-color: #1a1a2e; 
+            --nav-bg: rgba(255, 255, 255, 0.95); }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); transition: all 0.4s ease; overflow-x: hidden; }
+        h1, h2, h3, h4, .logo { font-family: 'Bungee', cursive; text-transform: uppercase; line-height: 1.1; }
+        
+        /* Navigation */
+        nav { position: sticky; top: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; border-bottom: 4px solid var(--neon-blue); z-index: 1000; }
+        .logo { font-size: 1.8rem; color: var(--neon-blue); text-shadow: 3px 3px 0 var(--neon-pink); }
+        .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 800; font-size: 0.85rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon-pink); }
+        .toggle-btn { background: var(--neon-pink); border: 2px solid white; padding: 8px 15px; font-family: 'Bungee'; cursor: pointer; color: white; border-radius: 12px; box-shadow: 4px 4px 0 var(--neon-blue); font-size: 0.7rem; }
+
+        /* Hero Section */
+        .hero { padding: 100px 10%; min-height: 85vh; display: flex; align-items: center; background: linear-gradient(135deg, var(--bg-color) 0%, var(--electric-purple) 100%); clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%); }
+        .hero-text { flex: 1.2; }
+        .hero-text h1 { font-size: 4.5rem; color: white; text-shadow: 6px 6px 0 var(--neon-pink); margin-bottom: 25px; }
+        .quote-box { background: var(--quote-bg); color: #fff; padding: 20px; border-left: 8px solid var(--cube-yellow); margin-bottom: 30px; border-radius: 0 15px 15px 0; font-style: italic; max-width: 500px; }
+        .btn-main { padding: 22px 50px; font-size: 1.6rem; font-family: 'Bungee'; background: var(--neon-pink); color: white; border: 4px solid white; cursor: pointer; box-shadow: 10px 10px 0 var(--neon-blue); transition: 0.2s; text-decoration: none; display: inline-block; }
+
+        /* --- 3D CUBE STYLES --- */
+        .hero-visual { 
+            flex: 0.8; 
+            display: flex; 
+            justify-content: center; 
+            perspective: 1200px; 
+            cursor: grab;
+            user-select: none;
+        }
+        .hero-visual:active { cursor: grabbing; }
+
+        .cube-3d { 
+            width: 210px; 
+            height: 210px; 
+            position: relative; 
+            transform-style: preserve-3d; 
+            animation: diagonalRotate 20s infinite linear;
+            transition: transform 0.1s ease-out;
+        }
+
+        @keyframes diagonalRotate {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .cube-3d.manual { animation: none; }
+
+        .face { 
+            position: absolute; 
+            width: 210px; 
+            height: 210px; 
+            border: 5px solid #000; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            backface-visibility: visible;
+        }
+        .face div { border: 1px solid rgba(0,0,0,0.2); }
+
+        .front  { background: #ffffff; transform: translateZ(105px); }
+        .back   { background: var(--cube-yellow); transform: rotateY(180deg) translateZ(105px); }
+        .left   { background: #ff7700; transform: rotateY(-90deg) translateZ(105px); }
+        .right  { background: #ff0033; transform: rotateY(90deg) translateZ(105px); }
+        .top    { background: #0066ff; transform: rotateX(90deg) translateZ(105px); }
+        .bottom { background: var(--cube-green); transform: rotateX(-90deg) translateZ(105px); }
+
+        /* Dashboard & Stats */
+        #progress-status, #faq, #contact { padding: 100px 10%; background: var(--bg-color); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+        .stat-card { background: var(--card-bg); border: 2px solid var(--neon-blue); padding: 30px; border-radius: 20px; text-align: center; transition: 0.3s; }
+        .stat-val { font-family: 'Bungee'; color: var(--neon-pink); font-size: 1.6rem; display: block; margin-top: 10px; }
+        .reset-container { text-align: center; margin-top: 50px; padding: 30px; background: rgba(255,0,127,0.05); border-radius: 20px; border: 1px dashed var(--neon-pink); }
+        .btn-reset { background: none; border: 2px solid var(--neon-pink); color: var(--neon-pink); padding: 10px 25px; font-family: 'Bungee'; cursor: pointer; border-radius: 10px; transition: 0.3s; }
+        .btn-reset:hover { background: var(--neon-pink); color: white; }
+
+        /* FAQ Styling */
+        .faq-container { max-width: 800px; margin: 40px auto; }
+        .faq-item { background: var(--card-bg); border: 2px solid var(--neon-blue); border-radius: 15px; margin-bottom: 15px; overflow: hidden; box-shadow: 4px 4px 0 var(--neon-blue); }
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.9rem; }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: 0.3s ease-out; opacity: 0; font-size: 0.85rem; color: #ccc; }
+        .faq-item.active .faq-answer { padding: 20px; max-height: 200px; opacity: 1; border-top: 1px solid rgba(0,242,255,0.2); }
+
+        /* Contact Styling */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 40px; }
+        .contact-card { background: var(--card-bg); border: 2px solid var(--neon-blue); padding: 30px; border-radius: 20px; }
+        .info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .info-item i { color: var(--neon-blue); font-size: 1.2rem; }
+        .social-icons { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 45px; height: 45px; background: var(--electric-purple); display: flex; align-items: center; justify-content: center; border-radius: 10px; color: white; text-decoration: none; font-size: 1.2rem; transition: 0.3s; }
+        .social-icons a:hover { background: var(--neon-pink); transform: translateY(-5px); }
+        
+        .btn-whatsapp { background: #25d366; color: white; border: none; padding: 15px 25px; font-family: 'Bungee'; border-radius: 10px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; width: 100%; justify-content: center; transition: 0.3s; margin-top: 20px; }
+        .btn-whatsapp:hover { background: #128c7e; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
+
+        footer { padding: 40px; text-align: center; background: #000; border-top: 5px solid var(--neon-pink); }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; }
+            .hero-text h1 { font-size: 3rem; }
+            .hero-visual { margin-top: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+   <nav>
+        <div class="logo">MASTER CUBER</div>
+        <ul class="nav-links">
+            
+            <li><a href="learn.html" target="_blank">LEARN</a></li>
+            <li><a href="about.html" target="_blank">ABOUT ME</a></li>
+            <li><a href="#progress-status">PROGRESS</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+            <li><button class="toggle-btn" onclick="document.body.classList.toggle('light-mode')">🌓 THEME</button></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-text">
+            <span style="color:var(--neon-blue); font-weight:800; letter-spacing:3px;">VIRTUAL REPRESENTATION</span>
+            <h1>CRACK THE<br><span style="color: var(--neon-blue);">SECRET!</span></h1>
+            <div class="quote-box"><p>“If you are curious, you will find the puzzles around you. If you are determined, you will solve them.” – Ernő Rubik</p></div>
+            <a href="choice.html" class="btn-main" onclick="celebrate()">START SOLVING 😄🔥</a>
+        </div>
+
+        <div class="hero-visual" id="cube-container">
+            <div class="cube-3d" id="cube">
+                <div class="face front"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="face back"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="face left"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="face right"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="face top"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="face bottom"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="progress-status">
+        <h2 style="text-align: center; color: var(--neon-blue); font-size: 2.5rem;">🏆 YOUR PROGRESS STATUS</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><small>TOTAL PLAY TIME</small><span id="global-time" class="stat-val">00:00:00</span></div>
+            <div class="stat-card"><small>TOTAL TWISTS</small><span id="global-twists" class="stat-val">0</span></div>
+        </div>
+        
+        <h3 style="margin-top: 60px; text-align: center; color: var(--cube-yellow);">Detailed Lab Records</h3>
+        <div class="stats-grid" id="lab-details"></div>
+        
+        <div class="reset-container">
+            <button class="btn-reset" onclick="resetAllData()">⚠️ RESET ALL DATA</button>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 style="text-align: center; color: var(--cube-yellow); font-size: 2.5rem;">COMMON CUBING QUERIES</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">🧩 CAN ANYONE LEARN TO SOLVE A RUBIK'S CUBE? <span>[+]</span></div>
+                <div class="faq-answer">Absolutely! With patience and the right algorithms, anyone can master it. It's about muscle memory and logic.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">⏱️ HOW CAN I IMPROVE MY SOLVING TIME? <span>[+]</span></div>
+                <div class="faq-answer">Learn advanced methods like CFOP, practice your finger tricks, and maintain your cube with proper lubrication.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">📉 WHAT IS THE "REDUCTION METHOD" FOR BIG CUBES? <span>[+]</span></div>
+                <div class="faq-answer">It's a technique where you solve the centers and edges first to turn a big cube (like 4x4 or 5x5) into a 3x3 equivalent.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">🔴 WHAT ARE "PARITY ERRORS" IN 4X4 AND 6X6? <span>[+]</span></div>
+                <div class="faq-answer">Parity occurs when a cube state is reached that is impossible on a 3x3, requiring specific long algorithms to fix.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 style="text-align: center; color: var(--neon-pink); font-size: 2.5rem;">GET IN TOUCH</h2>
+        <p style="text-align:center; opacity:0.8; margin-bottom: 20px;">Have questions or want to collaborate? Connect with the Master Cuber team!</p>
+        
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>FOUNDER PROFILE</h3>
+                <div class="info-item" style="margin-top:20px;"><i class="fas fa-user"></i> Miss Radhika Ravindra Janawekar</div>
+                <div class="info-item"><i class="fas fa-phone"></i> +91 8446166788</div>
+                <div class="info-item"><i class="fas fa-map-marker-alt"></i> Ratnagiri, Maharashtra</div>
+                
+                <h4 style="margin-top: 25px; font-size: 0.9rem; color: var(--neon-blue);">🌐 Connect with me</h4>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/coderncuber?igsh=MTVtcTg5amw2Zm94Mg==" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@radhikajanawekar?si=nfHuhZEiQgdpYPdy" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://github.com/radheyy0506" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <h3>ASK AN EXPERT</h3>
+                <p style="font-size:0.8rem; margin:15px 0; opacity:0.7;">Click the button below to chat directly with Radhika on WhatsApp for tips, tricks, or technical help.</p>
+                <a href="https://wa.me/918446166788?text=Hi%20Radhika,%20I%20have%20a%20query%20regarding%20Master%20Cuber!" 
+                   class="btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> ASK EXPERT ON WA
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>MASTER CUBER © 2026 | DESIGNED BY RADHIKA R. JANAWEKAR</p></footer>
+
+    <script>
+        // --- 3D CUBE INTERACTIVE LOGIC ---
+        const cube = document.getElementById('cube');
+        const container = document.getElementById('cube-container');
+        let isDragging = false;
+        let prevX, prevY;
+        let rotateX = 0, rotateY = 0;
+
+        container.addEventListener('mousedown', e => { 
+            isDragging = true; 
+            prevX = e.clientX; 
+            prevY = e.clientY; 
+            cube.classList.add('manual'); 
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        window.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            let dx = e.clientX - prevX;
+            let dy = e.clientY - prevY;
+            rotateY += dx * 0.5;
+            rotateX -= dy * 0.5;
+            cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            prevX = e.clientX; prevY = e.clientY;
+        });
+
+        // --- DASHBOARD LOGIC ---
+        function updateDashboard() {
+            const labs = ["3x3", "4x4", "5x5", "6x6"];
+            let totalTwists = 0, totalSeconds = 0;
+            const container = document.getElementById('lab-details');
+            container.innerHTML = "";
+
+            labs.forEach(lab => {
+                const twists = parseInt(localStorage.getItem(`moves_${lab}`)) || 0;
+                const time = parseInt(localStorage.getItem(`time_${lab}`)) || 0;
+                const bestTime = localStorage.getItem(`bestTime_${lab}`);
+                const bestMoves = localStorage.getItem(`bestMoves_${lab}`);
+                
+                totalTwists += twists; 
+                totalSeconds += time;
+
+                container.innerHTML += `
+                    <div class="stat-card">
+                        <h4 style="color:var(--neon-blue)">${lab} LAB</h4>
+                        <p><small>Best Time:</small> <span class="stat-val" style="font-size:1.1rem; color:var(--cube-green)">${bestTime || "--:--"}</span></p>
+                        <p><small>Fewest Moves:</small> <span class="stat-val" style="font-size:1.1rem; color:var(--cube-yellow)">${bestMoves || "0"}</span></p>
+                        <p style="margin-top:10px; opacity:0.6; font-size:0.7rem;">Lifetime Twists: ${twists}</p>
+                    </div>`;
+            });
+            
+            document.getElementById('global-twists').innerText = totalTwists.toLocaleString();
+            
+            const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('global-time').innerText = h + ":" + m + ":" + s;
+        }
+
+        function resetAllData() {
+            if(confirm("Are you sure? This will wipe all progress.")) {
+                localStorage.clear(); 
+                updateDashboard();
+            }
+        }
+
+        // --- FAQ LOGIC ---
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        function celebrate() { 
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }); 
+        }
+
+        window.onload = updateDashboard;
+    </script>
+</body>
+</html>
